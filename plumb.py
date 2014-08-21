@@ -15,8 +15,12 @@ def build():
   def chain(env, calls):
     return reduce(call(env), calls, lambda x: x)
 
-  def plumb(env, expr):
-    return curry(lambda arg: chain([arg] + env, expr))
+  def plumb_(env, expr, arg):
+    if len(expr) is 0:
+      return arg
+    return chain([arg] + env, expr)
+
+  plumb = curry(plumb_)
 
   return curry(lambda expr: plumb([], expr))
 
